@@ -3,12 +3,19 @@ from flask import Flask, render_template, request, redirect, url_for, flash, g
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret'
-DATABASE = 'database.db'
+DATABASE = 'schema.sql'
 
 def get_db():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
     return conn
+
+def init_db():
+    conn = get_db()
+    with app.open_resource('schema.sql') as f:
+        conn.executescript(f.read().decode('utf8'))
+    conn.close()
+
 
 if __name__ == '__main__':
     if not os.path.exists(DATABASE):
@@ -17,6 +24,7 @@ if __name__ == '__main__':
             conn.executescript(f.read().decode('utf8'))
         conn.close()
     app.run(debug=True)
+
 
 
 

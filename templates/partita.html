@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuovo Gioco</title>
+</head>
+    <body>
+    <h1>Partite di {{ gioco.nome }}</h1>
+    <p><a href="{{ url_for('index') }}">Torna alla lista dei giochi
+    </a></p>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul>
+        {% for category, msg in messages %}
+          <li>{{ msg }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% if partite|length == 0 %}
+      <p>Nessuna partita ancora registrata per questo gioco.</p>
+    {% else %}
+      <table border="1" cellpadding="6" cellspacing="0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Data</th>
+            <th>Numero Giocatori</th>
+            <th>Vincitore</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in partite %}
+          <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.data }}</td>
+            <td>{{ p.numero_giocatori }}</td>
+            <td>{{ p.vincitore }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+
+    </body>
+</html>

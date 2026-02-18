@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, g
+from flask import Flask, render_template, request, redirect, url_for, flash, g, Blueprint
 import sqlite3
 
 app = Flask(__name__)
-DATABASE = 'database.db'
+bp = Blueprint('main', __name__)
+DATABASE = 'schema.sql'
 
 def get_db():
     conn = sqlite3.connect(DATABASE)
@@ -15,6 +16,7 @@ def index():
     giochi = conn.execute('SELECT * FROM giochi').fetchall()
     conn.close()
     return render_template('index.html', giochi=giochi)
+
 
 @bp.route ("/nuovo_gioco, methods=['GET', 'POST']")
 def nuovo_gioco():
@@ -37,7 +39,9 @@ def gioco(id):
         flash('Gioco non trovato!')
         return redirect(url_for('index'))
     return render_template('gioco.html', gioco=gioco)
+app.register_blueprint(bp)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
-    
+
