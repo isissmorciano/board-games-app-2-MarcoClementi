@@ -1,16 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuovo Gioco</title>
-</head>
-    <body>
+    <title>Partite di {{ gioco.nome }}</title>
+  </head>
+  <body>
     <h1>Partite di {{ gioco.nome }}</h1>
-    <p><a href="{{ url_for('index') }}">Torna alla lista dei giochi
-    </a></p>
-    
+    <p><a href="{{ url_for('index') }}">Torna alla lista dei giochi</a></p>
+
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         <ul>
@@ -21,6 +19,26 @@
       {% endif %}
     {% endwith %}
 
+    <h2>Registra nuova partita</h2>
+    <form method="post" action="{{ url_for('gioco_partite', gioco_id=gioco.id) }}">
+      <div>
+        <label for="data">Data:</label>
+        <input type="date" id="data" name="data" required>
+      </div>
+      <div>
+        <label for="vincitore">Vincitore:</label>
+        <input type="text" id="vincitore" name="vincitore" required>
+      </div>
+      <div>
+        <label for="punteggio_vincitore">Punteggio vincitore:</label>
+        <input type="number" id="punteggio_vincitore" name="punteggio_vincitore" min="0" required>
+      </div>
+      <div>
+        <button type="submit">Aggiungi Partita</button>
+      </div>
+    </form>
+
+    <h2>Elenco partite</h2>
     {% if partite|length == 0 %}
       <p>Nessuna partita ancora registrata per questo gioco.</p>
     {% else %}
@@ -29,8 +47,8 @@
           <tr>
             <th>ID</th>
             <th>Data</th>
-            <th>Numero Giocatori</th>
             <th>Vincitore</th>
+            <th>Punteggio</th>
           </tr>
         </thead>
         <tbody>
@@ -38,13 +56,13 @@
           <tr>
             <td>{{ p.id }}</td>
             <td>{{ p.data }}</td>
-            <td>{{ p.numero_giocatori }}</td>
             <td>{{ p.vincitore }}</td>
+            <td>{{ p.punteggio_vincitore }}</td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
     {% endif %}
 
-    </body>
+  </body>
 </html>

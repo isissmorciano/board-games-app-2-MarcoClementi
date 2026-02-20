@@ -1,10 +1,10 @@
 import os
+import sqlite3
 from flask import Flask, render_template, request, redirect, url_for, flash, g
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret'
-DATABASE = 'schema.sql'
-
+DATABASE = 'giochi.db'
 def get_db():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
